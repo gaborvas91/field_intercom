@@ -25,9 +25,15 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Generate a Gradle wrapper pinned to a version compatible with our Android Gradle Plugin
+        working-directory: android
+        run: gradle wrapper --gradle-version 8.4
+
       - name: Build debug APK
         working-directory: android
-        run: gradle assembleDebug
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK as a downloadable artifact
         uses: actions/upload-artifact@v4
